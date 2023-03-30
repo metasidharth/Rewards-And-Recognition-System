@@ -1,0 +1,63 @@
+<!-- <template>
+    <lightning-card title="Employee Badges">
+
+            <template for:each={badges} for:item="badge">
+                <div key={badge.Id} class="slds-p-around_small">
+                    <div class="slds-media slds-media_center">
+                        <div class="slds-media__figure">
+                            <img src={badge.Approved_Badge__r.Image__c} alt={badge.Approved_Badge__r.Title__c} width="75" height="75" />
+                        </div>
+                        <div class="slds-media__body slds-p-left_x-small">
+                            <h2 class="slds-text-heading_small">{badge.Employee__r.Name}</h2>
+                            <p class="slds-text-body_small">{badge.Approved_Badge__r.Title__c}</p>
+                            <p class="slds-text-body_small">{badge.Category__r.Name}</p>
+                        </div>
+                    </div>
+                </div>
+            </template>
+
+            <template if:false={badges}>
+                <p>No badges earned yet.</p>
+              </template>
+
+    </lightning-card>
+</template> -->
+
+
+
+<template>
+
+    <lightning-card title="Employee Badges">
+
+        <template if:true={badges}>
+            <ul class=" slds-list_vertical slds-has-dividers_bottom">
+
+                <template for:each={badges} for:item="badge">
+
+                    <li  key={badge.Id} class="slds-item">
+
+                <div class="slds-media__figure">
+                            <img src={badge.Approved_Badge__r.Image__c} alt={badge.Approved_Badge__r.Title__c} width="50" height="50" />
+                </div>
+                <div class="slds-tile slds-tile_board slds-p-around_small">
+                    <div class="slds-tile__detail slds-text-body_small">
+                    <p class="slds-text-heading_small">{badge.Employee__r.Name}</p>
+                    <p class="slds-text-body_small">{badge.Category__r.Name}</p>
+                    <p class="slds-text-body_small">{badge.Approved_Badge__r.Title__c}</p>
+                    <!-- <img src={badge.Approved_Badge__r.Image__c} alt={badge.Approved_Badge__r.Title__c} class="slds-p-around_small"  width="150" height="150" /> -->
+
+                    </div>
+                </div>
+
+                    </li>
+                </template>
+
+            </ul>
+        </template>
+
+    <template if:false={badges}>
+      <p>No badges earned yet.</p>
+    </template>
+
+    </lightning-card>
+</template>
