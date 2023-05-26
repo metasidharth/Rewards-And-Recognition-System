@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ListView xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Set_System_Configuration</fullName>
+    <columns>NAME</columns>
+    <columns>System__c</columns>
+    <columns>Category__c</columns>
+    <columns>Sub_Category__c</columns>
+    <columns>Unit_Type__c</columns>
+    <columns>Rating_Unit__c</columns>
+    <columns>Points__c</columns>
+    <filterScope>Everything</filterScope>
+    <filters>
+        <field>Points__c</field>
+        <operation>equals</operation>
+    </filters>
+    <label>Set System Configuration</label>
+</ListView>

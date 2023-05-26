@@ -1,0 +1,62 @@
+<template>
+    <lightning-card>
+        <h1 class="slds-m-around_medium " style="text-align: center;">Send Email</h1>
+        <hr/>
+        <template if:true={emailArray}>
+            <template for:each={emailArray} for:item="item">
+            <lightning-layout key={item.id}>
+                <lightning-layout-item padding="around-small" size="8">
+                    <ul class="slds-has-dividers_around-space" >
+                        <li class="slds-item">
+                            <lightning-layout
+                                vertical-align="center"
+                                horizontal-align="spread"
+                            >
+                                <lightning-layout-item >
+                                    <span>{item.email}</span>
+                                </lightning-layout-item>
+
+                                <lightning-layout-item>
+                                    <lightning-button-icon
+                                    icon-name="utility:delete"
+                                    alternative-text="Delete"
+                                    title="delete"
+                                    class="slds-m-left_medium slds-text-align_right"
+                                    onclick={handleDelete}
+                                    value={item.id}
+                                > </lightning-button-icon>
+                                </lightning-layout-item>
+                            </lightning-layout>
+                        </li>
+                    </ul>
+                </lightning-layout-item>
+            </lightning-layout>
+            </template>
+         </template>
+
+
+        <!-- for adding email address -->
+       <div class="slds-grid slds-grid_vertical-align-center">
+           <lightning-input class="slds-m-around_medium" label="Enter the email address" type="Email"
+            onchange={handleInput}>
+        </lightning-input>
+
+        <lightning-button  class="slds-m-top_large" label="Add" variant="brand"
+            onclick={handleAdd}>
+        </lightning-button>
+       </div>
+
+
+
+
+        <lightning-layout>
+            <lightning-layout-item size="4" padding="around-small">
+              <lightning-button label="Send Email" variant="brand" onclick={handleSendEmail}></lightning-button>
+            </lightning-layout-item>
+            <lightning-layout-item size="6" padding="around-small" class="slds-text-align_right">
+              <lightning-button label="Send Email To All" variant="brand" onclick={sendEmailToAll}></lightning-button>
+            </lightning-layout-item>
+          </lightning-layout>
+
+    </lightning-card>
+</template>

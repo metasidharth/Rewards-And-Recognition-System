@@ -1,0 +1,26 @@
+<template >
+
+  
+  <lightning-card title="Employee Super Badges">
+    <template if:true={superBadgeList}>
+      <template for:each={superBadgeList} for:item="superbadge">
+        <div key={superbadge.Id} class="slds-p-around_small">
+          <div class="slds-media slds-media_center">
+            <div class="slds-media__figure">
+              <img src={superbadge.Super_Badge_Configuration__r.Super_Badge_Image__c} alt={superbadge.Super_Badge_Configuration__r.Name} width="75" height="75" />
+            </div>
+            <div class="slds-media__body slds-p-left_x-small">
+              <h2 class="slds-text-heading_small">{superbadge.Super_Badge_Configuration__r.Name}</h2>
+              <p class="slds-text-body_small">{superbadge.Category__r.Name}</p>
+            </div>
+          </div>
+        </div>
+      </template>
+    </template>
+
+    <template if:false={superBadgeList}>
+      <div class="slds-p-left_large">No super badges yet</div>
+    </template>
+
+  </lightning-card>
+</template>

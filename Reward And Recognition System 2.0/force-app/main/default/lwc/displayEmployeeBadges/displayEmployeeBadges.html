@@ -1,0 +1,62 @@
+<template>
+    <!-- <lightning-card title="Assigned Badges">
+        <template if:true={badgeList}>
+           
+                    <div class="slds-grid slds-wrap">
+                        <template for:each={badgeList} for:item="badge">
+                                <div key={badge.Id} class="slds-m-around_x-small">
+                                    <div class="slds-media slds-media_center">
+                                        <div class="slds-media__figure">
+                                            <img src={badge.Assigned_Badge__r.Image__c} alt={badge.Assigned_Badge__r.Title__c} width="50" height="50" />
+                                        </div> -->
+                                        <!-- <div class="slds-media__body">
+                                            <h1  class="slds-text-heading--small">{badge.Assigned_Badge__r.Title__c}</h1>
+                                        </div>
+                                        <div class="slds-media slds-media_center categoryName">
+                                            <div class="slds-text-body_regular">{badge.Category__r.Name}</div>
+                                        </div> -->
+
+                            <!-- <div class="slds-media__body slds-p-left_x-small"> -->
+                            <!-- <h2 class="slds-text-heading_small">{badge.Assigned_Badge__r.Title__c}</h2> -->
+                            <!-- <p class="slds-text-body_small">{badge.Approved_Badge__r.Title__c}</p> -->
+                          
+                            <!-- <p class="slds-text-body_small">{badge.Category__r.Name}</p>
+                           </div>
+
+                                    </div>
+                                  
+                                </div>
+                        </template>
+                    </div>
+              
+        </template> 
+ 
+    </lightning-card>-->
+
+    <lightning-card title="Employee Badges">
+
+            <template for:each={badgeList} for:item="badge">
+                <div key={badge.Id} class="slds-p-around_small">
+                    <div class="slds-media slds-media_center">
+                        <div class="slds-media__figure">
+                            <img src={badge.Assigned_Badge__r.Image__c} alt={badge.Assigned_Badge__r.Title__c} width="75" height="75" />
+                        </div>
+                        <div class="slds-media__body slds-p-left_x-small">
+                            <h2 class="slds-text-heading_small">{badge.Assigned_Badge__r.Title__c}</h2>
+                            <!-- <p class="slds-text-body_small">{badge.Assigned_Badge__r.Title__c}</p> -->
+                            <p class="slds-text-body_small">{badge.Category__r.Name}</p>
+                        </div>
+                    </div>
+                </div>
+            </template>
+
+
+
+              <template if:false={badgeList}>
+                   
+                        <div class="slds-p-left_large">No badges yet</div>
+                    
+                </template>
+
+    </lightning-card>
+</template>

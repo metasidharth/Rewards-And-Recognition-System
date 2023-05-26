@@ -1,0 +1,121 @@
+<!-- sldsValidatorIgnore -->
+<!-- sldsValidatorIgnore -->
+<template>
+
+ <lightning-card>
+
+    <!-- <h1 class="heading fs-2">Leaderboard</h1> -->
+    <h1  class="slds-align_absolute-center" style="font-weight: bold; font-size: 25px;">Leaderboard</h1>
+    <hr/>
+    <lightning-layout>
+        <lightning-layout-item style="width: 150px;"  class="slds-p-left_small lgc-bg Quarter" >
+
+
+             <lightning-combobox
+            name="Quarter"
+            label="Time Period"
+            value={quarterValue}
+            placeholder="Select Quarter"
+            options={quarterOptions}
+            onchange={handleQuarterChange} ></lightning-combobox>
+            <!-- <p>Selected value is: {quarterValue}</p> -->
+
+    </lightning-layout-item>
+
+    <lightning-layout-item style="width: 150px;" class="slds-p-left_large lgc-bg Category" >
+
+
+        <lightning-combobox
+            name="progress"
+            label="Category"
+            value={categoryvalue}
+            placeholder="Select Category"
+            options={categoryOptions}
+            onchange={handleChangeCategory} ></lightning-combobox>
+
+    <!-- <p>Selected value is: {categoryvalue}</p> -->
+
+    </lightning-layout-item>
+
+
+        <lightning-layout-item  style="width: 150px;" class="slds-p-left_small lgc-bg subcategory" >
+
+       <lightning-combobox
+            name="progress"
+            label="Sub Category"
+            value={subCategoryValue}
+            placeholder="Select Sub Category"
+            options={optionsSubCategory}
+            onchange={handleChangeSubCategory} ></lightning-combobox>
+
+    <!-- <p>Selected value is: {subCategoryValue}</p> -->
+
+
+    </lightning-layout-item>
+
+
+    </lightning-layout>
+
+<!-- if:true={showLeaderBoard} -->
+    <div  class="slds-m-around_medium" style="background-color:aquamarine;">
+        <lightning-datatable
+                key-field="id"
+                data={leaderboardArr}
+                columns={columns}
+                hide-checkbox-column>
+        </lightning-datatable>
+    </div>
+
+    <!-- <div>
+        <lightning-button variant="brand" label="Send Email" title="Looks like a link" onclick={sendEmail} class="slds-m-left_x-small"></lightning-button>
+    </div> -->
+
+
+
+    <!-- <template> -->
+        <div class="slds-text-align_right" >
+            <lightning-button size="8" variant="brand" class="slds-text-align_right slds-m-around_medium" label="Send Email" onclick={openModal} style="padding-left: 2px ; padding-right: 2px;"></lightning-button>
+          </div>
+
+
+    <template if:true={isModalOpen}>
+        <div class="slds-backdrop slds-backdrop_open"></div>
+        <section role="dialog" tabindex="-1" aria-labelledby="modal-heading-01" aria-modal="true" aria-describedby="modal-content-id-1" class="slds-modal slds-fade-in-open">
+            <div class="slds-modal__container">
+                <header class="slds-modal__header">
+                    <h2 id="modal-heading-01" class="slds-text-heading_medium">Send Email</h2>
+                    <button class="slds-button slds-button_icon slds-modal__close slds-button_icon-inverse" title="Close" onclick={closeModal}>
+                        <lightning-icon icon-name="utility:close" alternative-text="Close"></lightning-icon>
+                    </button>
+                </header>
+                <div class="slds-modal__content slds-p-around_medium" id="modal-content-id-1">
+                    <lightning-input label="To" value={toAddress} onchange={handleToChange}></lightning-input>
+                    <lightning-input label="CC" value={ccAddress} onchange={handleCcChange}></lightning-input>
+                    <lightning-input label="BCC" value={bccAddress} onchange={handleBccChange}></lightning-input>
+                </div>
+                <footer class="slds-modal__footer">
+                    <button class="slds-button slds-button_neutral" onclick={closeModal}>Cancel</button>
+                    <button class="slds-button slds-button_brand" onclick={sendEmail}>Send Leaderboard</button>
+
+                <lightning-layout-item size="6" padding="around-small" class="slds-text-align_left slds-p-left_small">
+                    <lightning-button label="Send Email To All" variant="brand" onclick={sendEmailToAll}></lightning-button>
+                </lightning-layout-item>
+
+                </footer>
+            </div>
+        </section>
+    </template>
+<!-- </template> -->
+
+
+
+    </lightning-card>
+
+
+
+
+
+
+
+
+</template>

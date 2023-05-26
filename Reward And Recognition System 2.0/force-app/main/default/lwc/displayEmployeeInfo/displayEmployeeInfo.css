@@ -1,0 +1,73 @@
+.employee-list {
+     list-style: none;
+     margin: 0;
+     padding: 0;
+
+    list-style: none;
+     
+    border: 1px solid #ccc;
+    border-radius: 5px;
+
+ }
+
+ .employee-item {
+     border: 1px solid #ccc;
+     border-radius: 5px;
+     padding: 10px;
+     margin-bottom: 10px;
+ }
+
+ .employee-name {
+     font-weight: bold;
+        margin-bottom: 5px;
+ }
+
+ .employee-email {
+     color: #999;
+ }
+
+ .employee-id {
+     color: #666;
+ }
+
+ .employee-points {
+     font-size: 1.2em;
+     color: #333;
+ }
+
+ .employee-redeemed {
+     font-size: 1.1em;
+     color: #FF4500;
+ }
+
+ .employee-monetizable {
+     font-size: 1.1em;
+     color: #008000;
+ }
+
+.employee-item:last-child {
+       border-bottom: none;
+   }
+
+.heading{
+    font-size: 1.3em;
+    color: #008000;
+}
+
+.detail{
+    font-size: 1.1em;
+}
+
+h1 {
+    background-color: #8290d5;
+    text-align: center;
+    /* set the background color */
+    padding: 10px;
+    /* add padding for spacing */
+    border-radius: 5px;
+    /* add rounded corners */
+    display: block;
+    /* display as inline block for width to match text */
+    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.25);
+    /* add a subtle shadow */
+}

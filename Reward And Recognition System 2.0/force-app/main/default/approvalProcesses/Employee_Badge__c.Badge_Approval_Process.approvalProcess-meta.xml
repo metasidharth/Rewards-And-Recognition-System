@@ -7,7 +7,7 @@
     </allowedSubmitters>
     <approvalPageFields>
         <field>Name</field>
-        <field>Badge_Configuration__c</field>
+        <field>Recommended_Badge__c</field>
         <field>Category__c</field>
         <field>Employee__c</field>
         <field>Status__c</field>
@@ -17,52 +17,23 @@
         <allowDelegate>false</allowDelegate>
         <assignedApprover>
             <approver>
-                <name>sid.sharma@metacube.com</name>
-                <type>user</type>
+                <type>adhoc</type>
             </approver>
-            <whenMultipleApprovers>FirstResponse</whenMultipleApprovers>
         </assignedApprover>
         <label>Step 1</label>
         <name>Step_1</name>
     </approvalStep>
     <emailTemplate>unfiled$public/SalesNewCustomerEmail</emailTemplate>
     <enableMobileDeviceAccess>false</enableMobileDeviceAccess>
-    <entryCriteria>
-        <formula>ISPICKVAL(Status__c,&apos;Pending&apos;)</formula>
-    </entryCriteria>
-    <finalApprovalActions>
-        <action>
-            <name>Final_Approval_Action</name>
-            <type>FieldUpdate</type>
-        </action>
-        <action>
-            <name>Final_approval_email</name>
-            <type>Alert</type>
-        </action>
-    </finalApprovalActions>
     <finalApprovalRecordLock>true</finalApprovalRecordLock>
-    <finalRejectionActions>
-        <action>
-            <name>Final_Rejection_Action</name>
-            <type>FieldUpdate</type>
-        </action>
-    </finalRejectionActions>
     <finalRejectionRecordLock>false</finalRejectionRecordLock>
     <initialSubmissionActions>
         <action>
             <name>Email_for_approval_of_badge</name>
             <type>Alert</type>
         </action>
-        <action>
-            <name>Initial_Status_Update</name>
-            <type>FieldUpdate</type>
-        </action>
     </initialSubmissionActions>
     <label>Badge Approval Process</label>
-    <nextAutomatedApprover>
-        <useApproverFieldOfRecordOwner>true</useApproverFieldOfRecordOwner>
-        <userHierarchyField>Manager</userHierarchyField>
-    </nextAutomatedApprover>
     <processOrder>1</processOrder>
     <recordEditability>AdminOrCurrentApprover</recordEditability>
     <showApprovalHistory>true</showApprovalHistory>

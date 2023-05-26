@@ -5,26 +5,26 @@
 global with sharing class RRExternalAPI {
 
    @HttpPost
-   global static String SubmitFeedback(String unitType,String name, String quarter, String systems, String rating, String description, String metacubeId, String category, String subCategory) {
-        insertEmployee(name,metacubeId);
+   global static String SubmitFeedback(String unitType,String name, String quarter, String systems, String rating, String description, String employeeId, String category, String subCategory) {
+        insertEmployee(name,employeeId);
         insertCategory(category);
         insertSubCategory(subCategory,category);
         insertQuarter(quarter);
         insertSystem(systems);
         insertSystemConfiguration( systems,rating,category, subCategory, unitType );
-     	insertFeedback(name,quarter,rating ,description,metacubeId,category,subCategory,systems);
+     	insertFeedback(name,quarter,rating ,description,employeeId,category,subCategory,systems);
         return 'success';
    }
 
-     private static void insertEmployee(String name , String metacubeId){
-        List<Employee__c> employeeList=[select Name,Metacube_Employee_Id__c from Employee__c ];
+     private static void insertEmployee(String name , String employeeId){
+        List<Employee__c> employeeList=[select Name,Employee_Id__c from Employee__c ];
         List<String> EmployeeIdList=new List<String>();
         for(Employee__c emp:employeeList){
-            EmployeeIdList.add(emp.metacube_Employee_Id__c);
+            EmployeeIdList.add(emp.Employee_Id__c);
         }
         String employeeIdString=String.join(EmployeeIdList,',');
-        if(!employeeIdString.contains(metacubeId)) {
-            Employee__c employee=new Employee__c(Name=name,Metacube_Employee_Id__c=metacubeId, Is_Active__c=true );
+        if(!employeeIdString.contains(employeeId)) {
+            Employee__c employee=new Employee__c(Name=name,Employee_Id__c=employeeId, Is_Active__c=true );
             insert employee;
         }
      }
@@ -100,35 +100,35 @@ global with sharing class RRExternalAPI {
 
        if(!combineIdList.contains(combineParameterString)){
         System_Configuration__c newConfig=new System_Configuration__c();
-        newConfig.name=systems+','+category+','+subcategory;
+        newConfig.name=systems+','+category+','+subcategory;   
         newConfig.Category__c=catId;
         newConfig.Sub_Category__c=subCatId;
         newConfig.System__c=sysId;
         newConfig.Unit_Type__c=unitType;
-        newConfig.Rating_Unit__c=1;
+        newConfig.Rating_Unit__c=1;  
            newConfig.Points__c=Integer.valueOf(rating);
         insert newConfig;
        }
 }
+    
+    private static void insertFeedback(String name,String quarter,String rating , String description, String employeeId, String category, String subCategory, String systems){
 
-    private static void insertFeedback(String name,String quarter,String rating , String description, String metacubeId, String category, String subCategory, String systems){
 
-
-        Id empId = [select name from Employee__c where Metacube_Employee_Id__c like: metacubeId ].get(0).Id;
+        Id empId = [select name from Employee__c where Employee_Id__c like: employeeId ].get(0).Id;
         Id quarterID = [select name from Quarter__c where name like:quarter].get(0).Id;
         Id SysconfigId=[select name from System_Configuration__c where Category__r.name like :category And
                       Sub_Category__r.name like :subCategory And system__r.name like :systems].get(0).Id;
-        Id employeeId=[select id from Employee__c where Metacube_Employee_Id__c like :metacubeId].get(0).Id;
-
+        Id employeeIds=[select id from Employee__c where Employee_Id__c like :employeeId].get(0).Id;
+       
         List<Feedback__c> feedbackList=[select name ,Rating__c , System_Configuration__c ,Quarter__c,Employee__c from Feedback__c ];
         for(Feedback__c feedback:feedbackList){
-            if(feedback.Employee__c==employeeId  && feedback.System_Configuration__c==SysconfigId && feedback.Quarter__c==quarterID ){
+            if(feedback.Employee__c==employeeIds  && feedback.System_Configuration__c==SysconfigId && feedback.Quarter__c==quarterID ){
                 feedback.Rating__c+=Integer.valueOf(rating);
                 update feedback;
                 return ;
             }
         }
-
+        
         Feedback__c newFeedback = new Feedback__c();
         newFeedback.Rating__c=Integer.valueOf(rating);
         newFeedback.Date__c=Date.today();
@@ -137,13 +137,11 @@ global with sharing class RRExternalAPI {
         newfeedback.Quarter__c=quarterID;
         newFeedback.Employee__c=empId;
         insert newfeedback;
-
+        
 
    }
-
-
-
-
+    
+    
 
 
 

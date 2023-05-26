@@ -7,7 +7,7 @@
     </allowedSubmitters>
     <approvalPageFields>
         <field>Name</field>
-        <field>Badge_Configuration__c</field>
+        <field>Recommended_Badge__c</field>
         <field>Category__c</field>
         <field>CreatedBy</field>
         <field>Employee__c</field>
@@ -27,22 +27,7 @@
     </approvalStep>
     <emailTemplate>unfiled$public/SupportCaseAssignmentNotification</emailTemplate>
     <enableMobileDeviceAccess>false</enableMobileDeviceAccess>
-    <entryCriteria>
-        <formula>ISPICKVAL(Status__c, &apos;Pending&apos;)</formula>
-    </entryCriteria>
-    <finalApprovalActions>
-        <action>
-            <name>Update_Pending_to_Approved</name>
-            <type>FieldUpdate</type>
-        </action>
-    </finalApprovalActions>
     <finalApprovalRecordLock>false</finalApprovalRecordLock>
-    <finalRejectionActions>
-        <action>
-            <name>Update_Pending_to_Rejected</name>
-            <type>FieldUpdate</type>
-        </action>
-    </finalRejectionActions>
     <finalRejectionRecordLock>false</finalRejectionRecordLock>
     <label>Badge Approval Process 2</label>
     <nextAutomatedApprover>

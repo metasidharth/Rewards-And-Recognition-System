@@ -1,0 +1,48 @@
+<template>
+    <div class="container">
+       
+        <table class="slds-table slds-table_cell-buffer slds-table_bordered">
+            <thead>
+                <tr class="slds-line-height_reset">
+                    <th class="slds-cell-wrap" scope="col">
+                        <div class="slds-truncate" title="Order ID">Order Name</div>
+                    </th>
+                    <th class="slds-cell-wrap" scope="col">
+                        <div class="slds-truncate" title="Order Date">Order Date</div>
+                    </th>
+                    <th class="slds-cell-wrap" scope="col">
+                        <div class="slds-truncate" title="Total Amount">Redeemed Points</div>
+                    </th>
+                    <th class="slds-cell-wrap" scope="col">
+                        <div class="slds-truncate" title="Status">Image</div>
+                    </th>
+                    <th class="slds-cell-wrap" scope="col">
+                        <div class="slds-truncate" title="Status">Status</div>
+                    </th>
+                </tr>
+            </thead>
+            <tbody>
+                <template for:each={rewardHistory} for:item="order">
+                    <tr key={order.Id} class="slds-hint-parent">
+                        <td class="slds-cell-wrap" data-label="Order ID">
+                            <div class="slds-truncate">{order.Earned_Reward__r.Name}</div>
+                        </td>
+                        <td class="slds-cell-wrap" data-label="Order Date">
+                            <div class="slds-truncate" >{order.Date__c}</div>
+                        </td>
+                        <td class="slds-cell-wrap" data-label="Total Amount">
+                            <div class="slds-truncate" >{order.Points_Redeemed__c}</div>
+                        </td>
+                        <td class="slds-cell-wrap" data-label="Reward image">
+                            <div class="slds-truncate" ><img src={order.Earned_Reward__r.Reward_Image__c} alt="rewardImage"
+                                 style="height:50px; width:50px"></div>
+                        </td>
+                        <td class="slds-cell-wrap" data-label="Status">
+                            <div class="slds-truncate" >{order.Status__c}</div>
+                        </td>
+                    </tr>
+                </template>
+            </tbody>
+        </table>
+    </div>
+</template>

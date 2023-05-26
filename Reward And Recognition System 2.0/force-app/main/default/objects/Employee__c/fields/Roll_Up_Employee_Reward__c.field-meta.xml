@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Roll_Up_Employee_Reward__c</fullName>
+    <externalId>false</externalId>
+    <label>Roll Up Employee Reward</label>
+    <summarizedField>Employee_Reward__c.Points_Redeemed__c</summarizedField>
+    <summaryForeignKey>Employee_Reward__c.Employee__c</summaryForeignKey>
+    <summaryOperation>sum</summaryOperation>
+    <trackTrending>false</trackTrending>
+    <type>Summary</type>
+</CustomField>

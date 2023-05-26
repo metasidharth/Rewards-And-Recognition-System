@@ -1,0 +1,39 @@
+<!-- sldsValidatorIgnore -->
+
+<template>
+  <lightning-card>
+      <!-- <h1 class="slds-m-around_medium " style="text-align: center;">Badges</h1>
+      <hr/> -->
+      <template if:true={allBadgeList}>
+        <lightning-layout class="slds-grid slds-wrap " style="margin-left: 100px;">
+          <template for:each={allBadgeList} for:item="badge">
+            <lightning-layout-item key={badge.Id} size="5" class="slds-m-around_small ">
+              <ul class="slds-has-dividers_around-space" >
+                <li class="slds-item hover-effect clickable-div "  value={badge.Id} onclick={handleRedirect}>
+                  <div>
+                    <lightning-layout
+                      vertical-align="center"
+                      horizontal-align="spread"
+                    >
+                      <lightning-layout-item>
+                        <span class="slds-m-around_large">
+                          <img src={badge.ImageUrl} alt={badge.Name} style="height: 100px; width: 100px;"/>
+                        </span>
+                      </lightning-layout-item>
+
+                      <lightning-layout-item>
+                        <div class="slds-m-left_medium slds-text-align_right slds-m-around_large" >
+                          <p> Category:{badge.Category}</p>
+                          <p> Total Badge Holders: {badge.EmployeeCount}</p>
+                        </div>
+                      </lightning-layout-item>
+                    </lightning-layout>
+                  </div>
+                </li>
+              </ul>
+            </lightning-layout-item>
+          </template>
+        </lightning-layout>
+      </template>
+  </lightning-card>
+</template>

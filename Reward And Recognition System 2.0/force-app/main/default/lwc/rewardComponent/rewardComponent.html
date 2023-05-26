@@ -1,0 +1,78 @@
+<!-- <template>
+<lightning-card>
+    <h1 style="text-align: center;">This is reward and recognition functionality</h1>
+
+
+        <template if:true={rewardsList}>
+
+                <template for:each={rewardsList} for:item="reward">
+                    <div class="slds-p-around_medium lgc-bg" key={reward.Id}>
+                        <lightning-tile label={reward.Name} href="/bruce.html" type="media">
+                            <img src={reward.Reward_Image__c} alt={reward.Name} style="height: 100px; width: 100px;"/>
+                            <ul class="slds-list_horizontal slds-has-dividers_right">
+                                <li class="slds-item"> the required points are :{reward.Required_Reward_Points__c}</li>
+                                <li class="slds-item">the reward type is {reward.Reward_Type__c}</li>
+                            </ul>
+                        <lightning-button label="Reedem" onclick={handleClick} value={reward}></lightning-button>
+                        </lightning-tile>
+                    </div>
+                </template>
+
+        </template>
+        <template if:false={rewardsList}>
+            <p>No rewards found.</p>
+        </template>
+
+
+
+</lightning-card>
+</template> -->
+
+
+
+
+<template>
+
+    <div class="slds-m-top_medium slds-m-bottom_x-large">
+
+        <h2 class="slds-text-heading_medium slds-m-bottom_medium">
+
+
+    <lightning-card>
+        <h1 style="text-align: center;">Rewards</h1>
+
+
+        <div class="slds-grid slds-wrap">
+            <template for:each={rewardsList} for:item="reward">
+                <div class="slds-col slds-size_1-of-4" key={reward.Id}>
+                    <div class="slds-p-around_medium lgc-bg">
+
+                        <lightning-tile  class="custom-tile"  type="media" style="text-align: center;">
+                            <p><lightning-formatted-text value={reward.Name}  class="tile-heading"></lightning-formatted-text></p>
+                            <img src={reward.Reward_Image__c} alt={reward.Name} style="height: 100px; width: 100px; margin: 22px;"/>
+                            <ul class="slds-list_horizontal slds-has-dividers_right">
+                                <li class="slds-item" style="font-size:18px; margin-left:15px; ">Required Points: {reward.Required_Reward_Points__c}</li>
+
+                            </ul>
+<div class="slds-m-around_medium">
+  <lightning-button variant="Success" label="Redeem" title="Primary action" onclick={handleClick} value={reward} class={buttonClass}></lightning-button>
+</div>
+
+
+                        </lightning-tile>
+
+                    </div>
+                </div>
+            </template>
+        </div>
+
+            <template if:false={rewardsList}>
+                <p>No rewards found.</p>
+            </template>
+
+
+
+    </lightning-card>
+   </h2>
+      </div>
+    </template>

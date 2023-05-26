@@ -8,6 +8,7 @@
     <relationshipLabel>System_Configuration</relationshipLabel>
     <relationshipName>System_Configuration</relationshipName>
     <required>false</required>
+    <trackHistory>false</trackHistory>
     <trackTrending>false</trackTrending>
     <type>Lookup</type>
 </CustomField>

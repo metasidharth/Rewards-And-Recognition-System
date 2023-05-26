@@ -1,0 +1,54 @@
+<template>
+
+  <template if:true={currentBadge}>
+    <div class="slds-box">
+      <lightning-layout class="slds-grid_align-center slds-m-around_medium">
+        <lightning-layout-item >
+
+          <img src={currentBadge.Image__c} style="height: 100px; width: 100px;"/>
+        </lightning-layout-item>
+        <lightning-layout-item class="slds-m-left_medium slds-text-align_right slds-m-around_large">
+          <h1> Badge Name: {currentBadge.Name}</h1>
+          <h1>Category: {currentBadge.Category__r.Name}</h1>
+          <h1>Total Badge Holders: {noOfEmployees}</h1>
+        </lightning-layout-item>
+      </lightning-layout>
+    </div>
+  </template>
+
+
+
+
+  <template if:true={employeeList}>
+    <div class="slds-scrollable" style="height: 400px;">
+      <table class="slds-table slds-table_bordered slds-table_cell-buffer">
+        <thead>
+          <tr class="slds-text-heading_label">
+            <th scope="col">Rank</th>
+            <th scope="col">Name</th>
+            <th scope="col">Employee Id</th>
+            <th scope="col">Points</th>
+          </tr>
+        </thead>
+        <tbody>
+          <template for:each={topEmployeeList} for:item="employee" for:index="index">
+            <tr key={employee.Id}>
+              <td>{employee.rank}</td>
+              <td>{employee.Employee__r.Name}</td>
+              <td>{employee.Employee__r.Employee_Id__c}</td>
+              <td>{employee.Total_Points__c}</td>
+            </tr>
+          </template>
+        </tbody>
+      </table>
+    </div>
+  </template>
+  <div style="text-align: right;">
+    <lightning-layout class="slds-m-around_large">
+      <lightning-layout-item size="12" >
+        <lightning-button  variant="brand" label="View All" title="Primary action" onclick={handleViewAll} if:false={isHidden}></lightning-button>
+      </lightning-layout-item>
+    </lightning-layout>
+  </div>
+
+</template>

@@ -45,7 +45,7 @@
         <field>LastModifiedBy</field>
         <field>Status__c</field>
         <field>Total_Points__c</field>
-        <field>Badge_Configuration__c</field>
+        <field>Recommended_Badge__c</field>
     </approvalPageFields>
     <approvalStep>
         <allowDelegate>false</allowDelegate>

@@ -155,7 +155,7 @@
     <externalSharingModel>ControlledByParent</externalSharingModel>
     <label>Sub Category</label>
     <nameField>
-        <label>SubCategory Name</label>
+        <label>Sub Category Name</label>
         <type>Text</type>
     </nameField>
     <pluralLabel>Sub Categories</pluralLabel>
