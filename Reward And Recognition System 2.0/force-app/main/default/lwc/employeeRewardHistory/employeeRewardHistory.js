@@ -1,7 +1,7 @@
 import { LightningElement , track} from 'lwc';
 import getRewardHistory from '@salesforce/apex/EmployeeUnderBadge.getRewardHistory';
 export default class EmployeeRewardHistory extends LightningElement {
-    rewardHistory=[]
+    rewardHistory=[];
 
     connectedCallback(){
         getRewardHistory()
