@@ -7,8 +7,15 @@ public class SelectorForEmployeeBadge {
                                    new List<String> {fieldName,objectName});
         return  Database.query(query);
     }
+    
     public List<Employee_Badge__c> getBadgeHolder(String badgeId){
                 String query=String.format('select {0} from {1} where Assigned_Badge__c= :badgeId order by Total_Points__c DESC ',
+                                   new List<String> {fieldName,objectName});
+        return  Database.query(query);
+    }
+    
+    public List<Employee_Badge__c> getEmployeeBadge(){
+         String query=String.format('select {0} from {1} ',
                                    new List<String> {fieldName,objectName});
         return  Database.query(query);
     }

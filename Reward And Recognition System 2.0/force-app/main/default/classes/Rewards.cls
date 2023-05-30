@@ -16,7 +16,6 @@ public class Rewards {
         System.debug('this is employee Id'+ employeeId);
         System.debug('this is reward object'+ reward);
         Decimal requiredPoints=reward.Required_Reward_Points__c;
-        // SelectorForEmployee employeeSelector=new SelectorForEmployee();
         
         SelectorForEmployee employeeSelector=new SelectorForEmployee();
         Employee__c employee=employeeSelector.getEmployee(employeeId).get(0);
@@ -26,8 +25,7 @@ public class Rewards {
         */
         
         Employee_Reward__c newEmployeeReward=new Employee_Reward__c();
-        if( employee.Monetization_Points__c-requiredPoints>=0){
-            
+        if( employee.Monetization_Points__c-requiredPoints>=0){        
             //newEmployeeReward.Name=employee.name+' reward';
             newEmployeeReward.Date__c=Date.today();
             newEmployeeReward.Points_Redeemed__c=requiredPoints;
@@ -167,6 +165,11 @@ public class Rewards {
     @AuraEnabled(Cacheable=true)
     public static List<Employee_Reward__c> progressBarDetail(Id rewardId){
         return [select Employee__r.name,Earned_Reward__c,Status__c from Employee_Reward__c where Id =: rewardId];
+        /*
+         SelectorForEmployeeReward EmployeeRewardSelector=new SelectorForEmployeeReward();
+         List<Employee_Reward__c> employeeRewardList= EmployeeRewardSelector.getEmployeeReward(rewardId);
+			return employeeRewardList;
+       */
     }
     
     @AuraEnabled(Cacheable=true)

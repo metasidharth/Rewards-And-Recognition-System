@@ -1,0 +1,118 @@
+public class AssignBadgeTrigger2Domain extends fflib_SObjectDomain{
+    List<AggregateResult> feedbackList= new List<AggregateResult>();
+    List<Id> employeeIdList=new List<Id>();
+    List<Id> categoryList=new List<Id>();
+    Map<Id,System_Configuration__c> sysConfigMap = new Map<Id,System_Configuration__c>();
+    Map<Id,Badge_Configuration__c> badgeConfigMap=new Map<Id,Badge_COnfiguration__c>();
+    List<Employee_Badge__c> employeeBadgeList=new List<Employee_Badge__c>();
+    List<Employee_Badge__c> EmployeeBadgeToUpdate= new List<Employee_Badge__c>();
+    List<Badge_Configuration__c> badgeConfigList= new List<Badge_Configuration__c>();
+    
+    public AssignBadgeTrigger2Domain(List<Feedback__c > sObjectList) {
+        super(sObjectList);  
+        
+        // Initialize sysConfigMap  when constructing the domain
+        for(System_Configuration__c sys: [select Id,Category__c,Sub_Category__c,System__c from System_Configuration__c]){
+            sysConfigMap.put(sys.Id,Sys);
+        }
+        //Initialize EmployeeIdList and categoryList of newfeedback record  when constructing the domain
+        for(Feedback__c newFeedback:(List<Feedback__c>)Trigger.new){
+            employeeIdList.add(newFeedback.Employee__c);
+            categoryList.add(sysConfigMap.get(newFeedback.System_Configuration__c).Category__c);      
+        }
+        // Initialize the feedbackList of aggregate result (sum of total points category wise ) when constructiong the domain 
+        feedbackList = [SELECT Employee__c, System_Configuration__r.Category__c, SUM(Points__c)
+                        FROM FeedBack__c WHERE Employee__c IN :employeeIdList 
+                        AND System_Configuration__r.Category__c IN :categoryList
+                        GROUP BY System_Configuration__r.Category__c, Employee__c];
+        System.debug('The new List '+ Trigger.new);
+        // Initialize badgeConfigMap when constructing the domain
+        for(Badge_Configuration__c badgeConfig:[select name ,Category__c ,Required_Points__c,Title__c from Badge_Configuration__c order by Required_Points__c  ]){
+            badgeConfigMap.put(badgeConfig.Category__c,badgeConfig);
+        }
+        //  Initialize employeeBadgeList 
+        employeeBadgeList=[select Employee__c,Status__c, Category__c, Total_Points__c ,Recommended_Badge__c,
+                           Assigned_Badge__c from Employee_Badge__c where Employee__c IN :EmployeeIdList ];
+        
+        // Initialize BadgeConfigList
+        badgeConfigList=[select name ,Category__c ,Required_Points__c,Title__c from Badge_Configuration__c
+                         order by Required_Points__c  ];
+        
+    }
+    
+    public class Constructor implements fflib_SObjectDomain.IConstructable {
+        public fflib_SObjectDomain construct(List<SObject> sObjectList) {
+            return new AssignBadgeTrigger2Domain(sObjectList);
+        }
+    }
+    
+    //After Update
+    public override void onAfterUpdate(Map<Id,SObject> existingRecords){
+        // Loop through feedback results to update or create Employee Badge records
+        for(AggregateResult result:feedbackList){
+            String employee=(String)result.get('Employee__c');
+            String category=(String)result.get('Category__c');
+            Double totalPoints=(Double)result.get('expr0');
+            
+            // Check if an existing Employee Badge record exists for the employee and category
+            Employee_Badge__c existingBadge = null;
+            for(Employee_Badge__c badge:employeeBadgeList){
+                if(badge.Employee__c==employee && badge.Category__c==category){
+                    existingBadge = badge;
+                    break;
+                }
+            }
+            // If an existing Employee Badge record exists, update it
+            if(existingBadge != null){
+                existingBadge.Total_Points__c=totalPoints;
+                Badge_Configuration__c highestEligibleBadge = null; 
+                Boolean isNewEligibleBadge = false;
+                if(badgeConfigMap.keySet().contains(existingBadge.Category__c)){
+                    for(Badge_Configuration__c bg : badgeConfigList){
+                        if(existingBadge.Category__c == bg.Category__c && existingBadge.Total_Points__c >= bg.Required_Points__c){
+                            if(highestEligibleBadge == null || bg.Required_Points__c > highestEligibleBadge.Required_Points__c){
+                                highestEligibleBadge = bg;
+                                isNewEligibleBadge=true;
+                            }
+                        }
+                    }
+                    if(isNewEligibleBadge == true && existingBadge.Assigned_Badge__c != highestEligibleBadge.Id){                    
+                        existingBadge.Status__c = 'Pending';
+                        existingBadge.Recommended_Badge__c = highestEligibleBadge.Id;     
+                    } 
+                }
+                EmployeeBadgeToUpdate.add(existingBadge);
+            }
+        }
+        // Upsert all Employee Badge records
+        System.debug('the lis is '+EmployeeBadgeToUpdate);
+        Update EmployeeBadgeToUpdate;
+    }
+    
+    // afterInsert
+    public override void onAfterInsert(){
+        // Loop through feedback results to update or create Employee Badge records
+        for(AggregateResult result:feedbackList){
+            String employee=(String)result.get('Employee__c');
+            String category=(String)result.get('Category__c');
+            Double totalPoints=(Double)result.get('expr0');    
+            // If no existing Employee Badge record exists, create a new one
+            
+            Employee_Badge__c empBadge=new Employee_Badge__c();
+            empBadge.Employee__c=employee;
+            empBadge.Category__c=category;
+            empBadge.Total_Points__c=totalPoints;
+            for(Badge_Configuration__c  badgeConfig:badgeConfigList ){
+                if(empBadge.Category__c==badgeConfig.Category__c && empBadge.Total_Points__c>=badgeConfig.Required_Points__c){     
+                    empBadge.Status__c='Pending';
+                    empBadge.Recommended_Badge__c=badgeConfig.Id;
+                }   
+                EmployeeBadgeToUpdate.add(empBadge);
+            }
+        }  
+        // Upsert all Employee Badge records
+        System.debug('the lis is '+EmployeeBadgeToUpdate);
+        Insert EmployeeBadgeToUpdate;
+    }
+    
+}

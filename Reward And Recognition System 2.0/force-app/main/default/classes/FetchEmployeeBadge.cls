@@ -5,9 +5,16 @@ public class FetchEmployeeBadge {
         /*
         List<Employee_Badge__c> badges =[select Employee__r.Name,Category__r.Name,Assigned_Badge__r.Title__c,Assigned_Badge__r.Image__c from Employee_Badge__c where Employee__c=:EmployeeId];
        */
+        
         SelectorforEmployeeBadge EmployeeBadgeSelector= new SelectorforEmployeeBadge();
         List<Employee_Badge__c> badges=EmployeeBadgeSelector.getEmployeeBadge(employeeId);
-        return badges;    
+        List<Employee_Badge__c> filterList= new List<Employee_Badge__c>();
+        for(Employee_Badge__c bg:badges){
+            if(bg.Assigned_Badge__c!=Null){
+                filterList.add(bg);
+            }
+        }
+        return filterList;    
     }
     
    @AuraEnabled(cacheable=true)

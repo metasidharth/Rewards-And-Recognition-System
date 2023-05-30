@@ -1,25 +1,31 @@
-trigger SendMailOnStatusChange on Employee_Reward__c (after update,after insert) {
-    fflib_SObjectDomain.triggerHandler(SendMailOnStatusChangeDomain.class); 
-}
-
-
-    /*
+public class SendMailOnStatusChangeDomain  extends fflib_SObjectDomain {
+    Map<String,Employee__c> employeeMap=new Map<String,Employee__c>();
+    Map<String,Reward_Configuration__c> rewardMap=new Map<String,Reward_Configuration__c>();
+    
+    public SendMailOnStatusChangeDomain(List<Employee_Reward__c> sObjectList) {
+        super(sObjectList);
+        // Initialize employeeMap when constructing the domain
+        for(Employee__c emp: [Select name ,Employee_Id__c , Email__c from Employee__c]){
+            employeeMap.put(emp.Id,emp);          
+        }
+        for(Reward_Configuration__c rw: [Select Name ,Reward_Image__c from Reward_Configuration__c]){
+            rewardMap.put(rw.Id,rw);
+        }
+    }
+    
+    public class Constructor implements fflib_SObjectDomain.IConstructable {
+        public fflib_SObjectDomain construct(List<SObject> sObjectList) {
+            return new SendMailOnStatusChangeDomain(sObjectList);
+        }
+    }
+        
     List<Status_Tracking__c> stList=new List<Status_Tracking__c>(); 
     
-    Map<String,Employee__c> employeeMap=new Map<String,Employee__c>();
-    for(Employee__c emp: [Select name ,Employee_Id__c , Email__c from Employee__c]){
-        employeeMap.put(emp.Id,emp);
-    }
-    
-    Map<String,Reward_Configuration__c> rewardMap=new Map<String,Reward_Configuration__c>();
-    for(Reward_Configuration__c rw: [Select Name ,Reward_Image__c from Reward_Configuration__c]){
-        rewardMap.put(rw.Id,rw);
-    }
-    
-    if(Trigger.isUpdate){
-        for(Employee_Reward__c empReward:Trigger.new){
-            
-            if(Trigger.oldMap.get(empReward.Id).Status__c != Trigger.newMap.get(empReward.Id).Status__c){
+    public override void onAfterUpdate(Map<Id,SObject> existingRecords) {      
+        for(Employee_Reward__c empReward:(List<Employee_Reward__c>)Trigger.new){            
+            Employee_Reward__c oldRecord=(Employee_Reward__c)existingRecords.get(empReward.Id);           
+            if(oldRecord.Status__c != empReward.Status__c){
+                // if(Trigger.oldMap.get(empReward.Id).Status__c != Trigger.newMap.get(empReward.Id).Status__c){
                 Employee__c emp= employeeMap.get(empReward.Employee__c);
                 Reward_Configuration__c rwd=rewardMap.get(empReward.Earned_Reward__c);
                 sendEmail(emp,rwd,empReward.Status__c);
@@ -28,22 +34,27 @@ trigger SendMailOnStatusChange on Employee_Reward__c (after update,after insert)
                 st.Status__c=empReward.Status__c;
                 st.Processed_Date__c=Date.today();
                 stList.add(st);
-            }
-            
-        }
-        
-        
-        
-    }else if(Trigger.isInsert){
-        for(Employee_Reward__c empReward:Trigger.new){
+            }          
+        }  
+        upsert stList; 
+    }
+    
+    public override void onAfterInsert(){
+        for(Employee_Reward__c empReward:(List<Employee_Reward__c>)Trigger.new){
+            /*
+            Employee__c emp= employeeMap.get(empReward.Employee__c);
+            Reward_Configuration__c rwd=rewardMap.get(empReward.Earned_Reward__c);
+            sendEmail(emp,rwd,empReward.Status__c);
+			*/
             Status_Tracking__c st=new Status_Tracking__c();
             st.Employee_Reward__c=empReward.Id;
             st.Status__c=empReward.Status__c;
             st.Processed_Date__c=Date.today();
             stList.add(st);
+            
         }    
+        upsert stList; 
     }
-    
     public static void sendEmail(Employee__c employee,Reward_Configuration__c reward,String status){
         List<Employee__c> hrList=[select name , Email__c  from Employee__c WHERE Designation__c like 'HR'];
         List<String> emailListString = new List<String>(); 
@@ -75,9 +86,9 @@ trigger SendMailOnStatusChange on Employee_Reward__c (after update,after insert)
         // Set the HTML body for the email
         emailToHR.setHtmlBody(htmlBodyHR);
         
-        // Send the email to the employee who redeemed reward
-        Messaging.sendEmail(new List<Messaging.SingleEmailMessage>{emailToHR});
         
+        // Send the email to the employee who redeemed reward
+        Messaging.sendEmail(new List<Messaging.SingleEmailMessage>{emailToHR});       
         List<String> EmployeeEmail=new List<String>();
         EmployeeEmail.add(employee.Email__c);
         // Generate the email body for Employee  using an email template
@@ -107,5 +118,6 @@ trigger SendMailOnStatusChange on Employee_Reward__c (after update,after insert)
         Messaging.sendEmail(new List<Messaging.SingleEmailMessage>{emailToEmployee});
         
     } 
-    insert stList;    
-  */
+    
+    
+}

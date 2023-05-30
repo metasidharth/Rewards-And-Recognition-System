@@ -1,5 +1,9 @@
 trigger ApprovedBadgeTrigger on Employee_Badge__c (before Update) {
+  fflib_SObjectDomain.triggerHandler(ApprovedBadgeDomain.class);  
+}
 
+
+/*
     List<Employee_badge__c> employeeBadgeList= new List<Employee_badge__c>();
     for(Employee_Badge__c empBadge:trigger.new){
         if(empBadge.Status__c=='Approved'){
@@ -9,6 +13,4 @@ trigger ApprovedBadgeTrigger on Employee_Badge__c (before Update) {
         }
         
     }
-    
-
-}
+*/

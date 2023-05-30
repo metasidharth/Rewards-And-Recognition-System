@@ -43,10 +43,10 @@ export default class DisplayEmployeeBadges extends LightningElement {
   @wire(fetchEmpBadge, { employeeId: '$recordId'})
     wiredAssignedBadges({ error, data }) {
         if(data){
-
             this.badgeList = data;
             console.log('the badgeList of the employeee is : ',data);
             this.categoryList = Array.from(new Set(data.map(badge => badge.Category__r.Name)));
+            console.log('category List is ',JSON.stringify(this.categoryList))
             this.error = undefined;
         } else if (error) {
             this.error = error;
